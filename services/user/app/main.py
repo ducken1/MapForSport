@@ -2,7 +2,7 @@ import os
 from fastapi import FastAPI, Depends
 from fastapi.staticfiles import StaticFiles
 from app.routes import user
-from app.core.database import init_db, get_db
+from app.core.database import init_db
 from app.core.logger import logger
 
 app = FastAPI()
