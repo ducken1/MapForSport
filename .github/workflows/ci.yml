@@ -10,9 +10,9 @@ jobs:
       db:
         image: mysql:latest
         env:
-          MYSQL_ROOT_PASSWORD: rootpassword
-          MYSQL_DATABASE: test_db
-          MYSQL_USER: test_user
+          MYSQL_ROOT_PASSWORD: Geslo123
+          MYSQL_DATABASE: user
+          MYSQL_USER: root
           MYSQL_PASSWORD: testpass123
         ports:
           - 3306:3306
