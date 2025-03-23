@@ -7,43 +7,55 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      db:
-        image: mysql:latest
+      mysql:
+        image: mysql:8.0
         env:
-          DB_DATABASE: test_db
-          DB_USER: root
-          DB_PASSWORD: root
+          MYSQL_ROOT_PASSWORD: Geslo123
+          MYSQL_DATABASE: user
+          MYSQL_USER: testuser
+          MYSQL_PASSWORD: testpass
         ports:
           - 3306:3306
-        options: --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=5
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
     steps:
-      - name: Start MySQL
-        run: |
-          sudo /etc/init.d/mysql start
-          mysql -e "CREATE DATABASE IF NOT EXISTS $DB_DATABASE;" -u$DB_USER -p$DB_PASSWORD
-
-      - name: Check out code
-        uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
-          python-version: 3.9
+          python-version: "3.9"
 
       - name: Install dependencies
         run: |
+          pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Wait for database to be ready
+      - name: Wait for MySQL to be ready
         run: |
-          sleep 15  # wait for MySQL to initialize
+          for i in {1..30}; do
+            if mysqladmin ping -h 127.0.0.1 --silent; then
+              echo "MySQL is ready"
+              exit 0
+            fi
+            echo "Waiting for MySQL..."
+            sleep 2
+          done
+          echo "MySQL did not become ready in time" >&2
+          exit 1
 
       - name: Run tests
         env:
-          DB_DATABASE: test_db
-          DB_USER: root
-          DB_PASSWORD: root
+          JWT_SECRET: e8694db72620093716a6c0a54ce7936e4bfc134da762595b7599092017c54872
+          DATABASE_NAME: user
+          DATABASE_USERNAME: testuser
+          DATABASE_PASSWORD: testpass
+          DATABASE_HOST: 127.0.0.1
+          DATABASE_PORT: 3306
         run: |
-           pytest --maxfail=1 --disable-warnings
-
+          pytest --maxfail=1 --disable-warnings
