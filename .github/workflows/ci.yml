@@ -22,15 +22,6 @@ jobs:
         options: --health-cmd="mysqladmin ping --silent" --health-start-period=30s
 
     steps:
-      - name: Set up MySQL environment variables for local DB
-        run: |
-          # Replace with your actual local MySQL connection settings
-          echo "MYSQL_ROOT_PASSWORD=Geslo123" >> $GITHUB_ENV
-          echo "MYSQL_DATABASE=user" >> $GITHUB_ENV
-          echo "MYSQL_USER=root" >> $GITHUB_ENV
-          echo "JWT_SECRET=e8694db72620093716a6c0a54ce7936e4bfc134da762595b7599092017c54872" >> $GITHUB_ENV
-          echo "MYSQL_HOST=your_local_mysql_ip" >> $GITHUB_ENV
-
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -45,19 +36,9 @@ jobs:
           source venv/bin/activate
           pip install -r requirements.txt
 
-      - name: Check environment variables
-        run: |
-          echo "MYSQL_DATABASE=${MYSQL_DATABASE}"
-          echo "MYSQL_USER=${MYSQL_USER}"
-          echo "MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}"
-
-      - name: List MySQL tables (Connect to local MySQL)
-        run: |
-          mysql -h ${MYSQL_HOST} -u root -p$MYSQL_ROOT_PASSWORD -e "SHOW TABLES IN $MYSQL_DATABASE;"
-
       - name: Wait for MySQL to be ready
         run: |
-          while ! mysqladmin -h ${MYSQL_HOST} -u root -p$MYSQL_ROOT_PASSWORD ping --silent; do
+          while ! mysqladmin -h 127.0.0.1 -u root -p$MYSQL_ROOT_PASSWORD ping --silent; do
             echo "Waiting for MySQL to be ready.."
             sleep 10
           done
