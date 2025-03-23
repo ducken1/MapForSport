@@ -2,9 +2,16 @@ import os
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from app.routes import user
+from app.core.database import init_db
 
 
 app = FastAPI()
+
+@app.on_event("startup")
+def on_startup():
+    # Initialize DB (create tables)
+    init_db()
+
 
 app.include_router(user.router, prefix="/users", tags=["users"])
 
