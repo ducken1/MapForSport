@@ -1,12 +1,12 @@
-name: FastAPI Test Workflow
+name: Run Tests
 
 on:
   push:
     branches:
-      - main
+      - '*'
   pull_request:
     branches:
-      - main
+      - '*'
 
 jobs:
   test:
@@ -51,4 +51,3 @@ jobs:
     - name: Run tests
       run: |
         pytest --maxfail=1 --disable-warnings -q
-
