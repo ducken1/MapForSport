@@ -16,8 +16,8 @@ jobs:
       mysql:
         image: mysql:5.7
         env:
-          MYSQL_ROOT_PASSWORD: rootpassword
-          MYSQL_DATABASE: testdb
+          MYSQL_ROOT_PASSWORD: Geslo123
+          MYSQL_DATABASE: user
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping --silent" --health-start-period=30s
