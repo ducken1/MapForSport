@@ -1,12 +1,12 @@
-name: FastAPI Test Workflow
+name: Run Tests
 
 on:
   push:
     branches:
-      - main
+      - '*'  # Change to the branch you want to monitor, e.g., 'master', 'dev', etc.
   pull_request:
     branches:
-      - main
+      - '*'  # If you want tests to run on pull requests as well
 
 jobs:
   test:
