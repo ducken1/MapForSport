@@ -41,11 +41,11 @@ jobs:
           echo "MYSQL_ROOT_PASSWORD=Geslo123" >> $GITHUB_ENV
           echo "MYSQL_DATABASE=user" >> $GITHUB_ENV
           echo "MYSQL_USER=root" >> $GITHUB_ENV
-          echo "MYSQL_HOST=localhost" >> $GITHUB_ENV
+          echo "MYSQL_HOST=mysql" >> $GITHUB_ENV
 
       - name: Wait for MySQL to be ready
         run: |
-          while ! mysqladmin -h 127.0.0.1 -u root -p$MYSQL_ROOT_PASSWORD ping --silent; do
+          while ! mysqladmin -h mysql -u root -p$MYSQL_ROOT_PASSWORD ping --silent; do
             echo "Waiting for MySQL to be ready.."
             sleep 10
           done
