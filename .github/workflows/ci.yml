@@ -10,13 +10,19 @@ jobs:
       db:
         image: mysql:latest
         env:
-          MYSQL_ROOT_PASSWORD: Geslo123
-          MYSQL_DATABASE: user
+          DB_DATABASE: test_db
+          DB_USER: root
+          DB_PASSWORD: root
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=5
 
     steps:
+      - name: Start MySQL
+        run: |
+          sudo /etc/init.d/mysql start
+          mysql -e "CREATE DATABASE IF NOT EXISTS $DB_DATABASE;" -u$DB_USER -p$DB_PASSWORD
+
       - name: Check out code
         uses: actions/checkout@v2
 
@@ -35,12 +41,9 @@ jobs:
 
       - name: Run tests
         env:
-          # Set the DJANGO_SECRET_KEY in the Github repo settings: Go to Secrets and variables > Actions > New repository secret 
-          JWT_SECRET: e8694db72620093716a6c0a54ce7936e4bfc134da762595b7599092017c54872
-          DATABASE_NAME: user
-          DATABASE_USERNAME: root          
-          DATABASE_PASSWORD: Geslo123          
-          DATABASE_ENDPOINT: 127.0.0.1 # Will not work with 'localhost', since that will try a Unix socket connection (!)
+          DB_DATABASE: test_db
+          DB_USER: root
+          DB_PASSWORD: root
         run: |
            pytest --maxfail=1 --disable-warnings
 
