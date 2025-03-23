@@ -1,23 +1,12 @@
 import sys
 import os
 from pathlib import Path
-from fastapi.testclient import TestClient
-sys.path.append(str(Path(__file__).resolve().parents[2]))  # Adjusting the path to root
+
+# Add the root project directory to the system path
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+
 from app.main import app
-from app.core.database import get_test_db, init_test_db, TestSessionLocal
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
-# Set up in-memory SQLite engine
-TEST_DATABASE_URL = "sqlite:///:memory:"
-test_engine = create_engine(TEST_DATABASE_URL)
-TestSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
-
-# Override the database dependency for testing
-app.dependency_overrides[get_test_db] = lambda: TestSessionLocal()
-
-# Initialize test database before running tests
-init_test_db()
+from fastapi.testclient import TestClient
 
 client = TestClient(app)
 
