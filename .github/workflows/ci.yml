@@ -11,6 +11,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
     services:
       mysql:
         image: mysql:5.7
@@ -23,14 +24,6 @@ jobs:
         options: --health-cmd="mysqladmin ping --silent" --health-start-period=30s
 
     steps:
-      - name: Set up MySQL environment variables
-        run: |
-          echo "MYSQL_ROOT_PASSWORD=Geslo123" >> $GITHUB_ENV
-          echo "MYSQL_DATABASE=user" >> $GITHUB_ENV
-          echo "MYSQL_USER=root" >> $GITHUB_ENV
-          echo "JWT_SECRET=e8694db72620093716a6c0a54ce7936e4bfc134da762595b7599092017c54872" >> $GITHUB_ENV
-          echo "MYSQL_HOST=localhost" >> $GITHUB_ENV
-
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -54,6 +47,14 @@ jobs:
       - name: List MySQL tables
         run: |
           mysql -h 127.0.0.1 -u root -p$MYSQL_ROOT_PASSWORD -e "SHOW TABLES IN $MYSQL_DATABASE;"
+
+
+      - name: Set environment variables
+        run: |
+          echo "JWT_SECRET=e8694db72620093716a6c0a54ce7936e4bfc134da762595b7599092017c54872" >> $GITHUB_ENV
+          echo "MYSQL_ROOT_PASSWORD=Geslo123" >> $GITHUB_ENV
+          echo "MYSQL_DATABASE=user" >> $GITHUB_ENV
+
 
       - name: Wait for MySQL to be ready
         run: |
