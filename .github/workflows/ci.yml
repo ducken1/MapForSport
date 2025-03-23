@@ -16,8 +16,8 @@ jobs:
       mysql:
         image: mysql:8
         env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}  # Ensure this secret is set up in GitHub
-          MYSQL_DATABASE: ${{ secrets.DB_NAME }}  # Ensure this secret is set up in GitHub
+          MYSQL_ROOT_PASSWORD: "Geslo123"  # Hardcoded root password
+          MYSQL_DATABASE: "user"  # Hardcoded database name
         ports:
           - 3306:3306  # Expose the MySQL port
         options: >-
@@ -42,11 +42,11 @@ jobs:
 
     - name: Set environment variables
       run: |
-        echo "DB_HOST=localhost" >> $GITHUB_ENV  # Set the MySQL host
-        echo "DB_USER=root" >> $GITHUB_ENV  # Set the MySQL user
-        echo "DB_PASS=${{ secrets.DB_PASSWORD }}" >> $GITHUB_ENV  # Use the secret for the password
-        echo "DB_NAME=${{ secrets.DB_NAME }}" >> $GITHUB_ENV  # Use the secret for the database name
-        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV  # Use the JWT secret for auth
+        echo "DB_HOST=localhost" >> $GITHUB_ENV  # Hardcoded MySQL host
+        echo "DB_USER=root" >> $GITHUB_ENV  # Hardcoded MySQL user
+        echo "DB_PASS=Geslo123" >> $GITHUB_ENV  # Hardcoded MySQL password
+        echo "DB_NAME=user" >> $GITHUB_ENV  # Hardcoded database name
+        echo "JWT_SECRET=e8694db72620093716a6c0a54ce7936e4bfc134da762595b7599092017c54872" >> $GITHUB_ENV  # Hardcoded JWT secret
 
     - name: Wait for MySQL to be ready
       run: |
