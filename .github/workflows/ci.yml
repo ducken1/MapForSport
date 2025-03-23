@@ -6,17 +6,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
-      db:
-        image: mysql:latest
-        env:
-          MYSQL_ROOT_PASSWORD: Geslo123
-          MYSQL_DATABASE: user
-          MYSQL_PASSWORD: testpass123
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=5
-
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -30,13 +19,11 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Wait for database to be ready
+      - name: Set up environment for testing
         run: |
-          sleep 15  # wait for MySQL to initialize
+          echo "DATABASE_URL=sqlite:///:memory:" >> $GITHUB_ENV
 
       - name: Run tests
         run: |
           pytest
 
-      - name: Tear down
-        run: docker-compose down
