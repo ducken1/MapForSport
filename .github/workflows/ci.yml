@@ -16,8 +16,8 @@ jobs:
       mysql:
         image: mysql:8.0  # Using MySQL 8.0 for database service
         env:
-          MYSQL_ROOT_PASSWORD: rootpassword  # Set MySQL root password
-          MYSQL_DATABASE: testdb  # Set up the database name
+          MYSQL_ROOT_PASSWORD: Geslo123  # Set MySQL root password
+          MYSQL_DATABASE: user  # Set up the database name
         ports:
           - 3306:3306  # Expose MySQL port
         options: >-
