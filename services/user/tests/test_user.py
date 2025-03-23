@@ -12,7 +12,7 @@ client = TestClient(app)
 
 def test_register():
     response = client.post("/users/register", json={
-        "email": "test123@example.com",
+        "email": "test321@example.com",
         "password": "testpass123",
         "full_name": "Test User"
     })
