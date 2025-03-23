@@ -2,6 +2,7 @@ import sys
 import os
 from pathlib import Path
 from fastapi.testclient import TestClient
+sys.path.append(str(Path(__file__).resolve().parents[2]))  # Adjusting the path to root
 from app.main import app
 from app.core.database import get_test_db, init_test_db, TestSessionLocal
 from sqlalchemy import create_engine

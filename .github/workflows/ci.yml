@@ -30,4 +30,4 @@ jobs:
       - name: Run tests with SQLite
         run: |
           source venv/bin/activate
-          pytest --maxfail=1 --disable-warnings -q
+          PYTHONPATH=$PWD pytest --maxfail=1 --disable-warnings -q
