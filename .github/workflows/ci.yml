@@ -24,7 +24,7 @@ jobs:
           --health-cmd="mysqladmin ping --silent"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=3
+          --health-retries=10  # Increased retries to give MySQL more time to start
 
     steps:
     - name: Checkout code
@@ -42,7 +42,7 @@ jobs:
 
     - name: Set environment variables
       run: |
-        echo "DB_HOST=localhost" >> $GITHUB_ENV  # Hardcoded MySQL host
+        echo "DB_HOST=mysql" >> $GITHUB_ENV  # Use service name `mysql` instead of localhost
         echo "DB_USER=root" >> $GITHUB_ENV  # Hardcoded MySQL user
         echo "DB_PASS=Geslo123" >> $GITHUB_ENV  # Hardcoded MySQL password
         echo "DB_NAME=user" >> $GITHUB_ENV  # Hardcoded database name
@@ -50,9 +50,10 @@ jobs:
 
     - name: Wait for MySQL to be ready
       run: |
+        # Retry until MySQL is available
         until mysql -h $DB_HOST -u $DB_USER -p$DB_PASS -e 'SELECT 1'; do
           echo "Waiting for MySQL to be ready..."
-          sleep 3
+          sleep 5  # Wait for 5 seconds before retrying
         done
 
     - name: Run tests
