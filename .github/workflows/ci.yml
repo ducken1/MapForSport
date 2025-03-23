@@ -18,7 +18,6 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: Geslo123
           MYSQL_DATABASE: user
-          MYSQL_USER: root
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping --silent" --health-start-period=30s
@@ -43,7 +42,6 @@ jobs:
           echo "MYSQL_DATABASE=${MYSQL_DATABASE}"
           echo "MYSQL_USER=${MYSQL_USER}"
           echo "MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}"
-
       - name: List MySQL tables
         run: |
           mysql -h 127.0.0.1 -u root -p$MYSQL_ROOT_PASSWORD -e "SHOW TABLES IN $MYSQL_DATABASE;"
