@@ -7,28 +7,10 @@ from app.core.logger import logger
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# SQLite In-Memory Database for Testing
-TEST_DATABASE_URL = "sqlite:///:memory:"
-test_engine = create_engine(TEST_DATABASE_URL)
-TestSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
 
 Base = declarative_base()
 
-def get_db():
-    """Dependency that provides a database session."""
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
-def get_test_db():
-    """Dependency for test database session."""
-    db = TestSessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 def init_db():
     """Initialize the database and create tables."""
