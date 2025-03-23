@@ -49,7 +49,7 @@ jobs:
       run: |
         for i in {1..30}; do
           nc -zv 127.0.0.1 3306 && break
-          echo "Waiting for MySQL to start..."
+          echo "Waiting for MySQL to start.."
           sleep 1
         done
 
