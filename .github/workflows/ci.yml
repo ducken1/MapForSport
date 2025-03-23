@@ -16,8 +16,8 @@ jobs:
       mysql:
         image: mysql:8
         env:
-          MYSQL_ROOT_PASSWORD: root_password  # Set the root password (adjust as needed)
-          MYSQL_DATABASE: test_db  # The name of your test database
+          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}  # Use the secret for the password
+          MYSQL_DATABASE: ${{ secrets.DB_NAME }}  # Use the secret for the database name
         ports:
           - 3306:3306  # Expose the MySQL port
         options: >-
@@ -40,9 +40,16 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Set environment variables
+      run: |
+        echo "DB_HOST=localhost" >> $GITHUB_ENV  # Set the MySQL host
+        echo "DB_USER=root" >> $GITHUB_ENV  # Set the MySQL user
+        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> $GITHUB_ENV  # Use the secret for the password
+        echo "DB_NAME=${{ secrets.DB_NAME }}" >> $GITHUB_ENV  # Use the secret for the database name
+
     - name: Wait for MySQL to be ready
       run: |
-        until mysql -h 127.0.0.1 -u root -proot_password -e 'SELECT 1'; do
+        until mysql -h $DB_HOST -u $DB_USER -p$DB_PASSWORD -e 'SELECT 1'; do
           echo "Waiting for MySQL to be ready..."
           sleep 3
         done
