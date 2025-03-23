@@ -1,23 +1,37 @@
 version: '3.8'
 
 services:
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: Geslo123
+      MYSQL_DATABASE: user
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+    volumes:
+      - mysql-data:/var/lib/mysql
+
   app:
-    build: .
+    build:
+      context: .
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASS: Geslo123
+      DB_NAME: user
+      JWT_SECRET: e8694db72620093716a6c0a54ce7936e4bfc134da762595b7599092017c54872
     ports:
       - "8000:8000"
-    environment:
-      - DATABASE_URL=postgresql://user:password@db:5432/mydatabase
     depends_on:
       - db
+    networks:
+      - app-network
 
-  db:
-    image: postgres:13
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: mydatabase
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
-  postgres_data:
+  mysql-data:

@@ -1,12 +1,12 @@
-name: Run Tests
+name: FastAPI Testing with MySQL
 
 on:
   push:
     branches:
-      - '*'
+      - main
   pull_request:
     branches:
-      - '*'
+      - main
 
 jobs:
   test:
@@ -14,52 +14,43 @@ jobs:
 
     services:
       mysql:
-        image: mysql:8.0
+        image: mysql:5.7
         env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASS }}
-          MYSQL_DATABASE: ${{ secrets.DB_NAME }}
+          MYSQL_ROOT_PASSWORD: Geslo123
+          MYSQL_DATABASE: user
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping --silent"
-          --health-interval=10s
+          --health-cmd='mysqladmin ping --silent'
+          --health-interval=5s
           --health-timeout=5s
-          --health-retries=5
+          --health-retries=3
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.9
+      # Set up Python
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Set environment variables
-      run: |
-        echo "DB_HOST=localhost" >> $GITHUB_ENV
-        echo "DB_USER=root" >> $GITHUB_ENV
-        echo "DB_PASS=${{ secrets.DB_PASS }}" >> $GITHUB_ENV
-        echo "DB_NAME=${{ secrets.DB_NAME }}" >> $GITHUB_ENV
-        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
+      # Run tests
+      - name: Run tests
+        env:
+          DB_HOST: localhost
+          DB_USER: root
+          DB_PASS: Geslo123
+          DB_NAME: user
+          JWT_SECRET: e8694db72620093716a6c0a54ce7936e4bfc134da762595b7599092017c54872
+        run: |
+          pytest tests/test_user.py  # Adjust the path to your test file
 
-    - name: Wait for MySQL to be ready
-      run: |
-        until mysql -h localhost -u root -p${{ secrets.DB_PASS }} -e "SELECT 1"; do
-          echo "Waiting for MySQL to be ready..."
-          sleep 2
-        done
-
-    - name: Run database migrations
-      run: |
-        # Run your migration command here, for example with Alembic
-        alembic upgrade head
-
-    - name: Run tests
-      run: |
-        pytest --maxfail=1 --disable-warnings -q
