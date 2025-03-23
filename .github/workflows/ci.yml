@@ -54,6 +54,10 @@ jobs:
           sleep 3
         done
 
+    - name: Check MySQL container logs
+      run: |
+        docker logs $(docker ps -q --filter "ancestor=mysql:8")  # Show MySQL container logs for debugging
+
     - name: Run tests
       run: |
         pytest
