@@ -37,7 +37,7 @@ jobs:
 
       - name: Run tests
         run: |
-          pytest tests/
+          pytest
 
       - name: Tear down
         run: docker-compose down
