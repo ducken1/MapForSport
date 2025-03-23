@@ -1,43 +1,17 @@
 version: '3.8'
-
 services:
   db:
-    image: mysql:5.7
+    image: mysql:latest
     environment:
       MYSQL_ROOT_PASSWORD: Geslo123
       MYSQL_DATABASE: user
+      MYSQL_USER: root
+      MYSQL_PASSWORD: Geslo123
     ports:
       - "3306:3306"
     networks:
-      - app-network
-    volumes:
-      - mysql-data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "--silent"]
-      interval: 5s
-      retries: 3
-      start_period: 5s
-      timeout: 5s
-
-  app:
-    build:
-      context: .
-    environment:
-      DB_HOST: db
-      DB_USER: root
-      DB_PASS: Geslo123
-      DB_NAME: user
-      JWT_SECRET: e8694db72620093716a6c0a54ce7936e4bfc134da762595b7599092017c54872
-    ports:
-      - "8000:8000"
-    depends_on:
-      - db
-    networks:
-      - app-network
+      - test_network
 
 networks:
-  app-network:
+  test_network:
     driver: bridge
-
-volumes:
-  mysql-data:
