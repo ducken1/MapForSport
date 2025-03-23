@@ -12,6 +12,12 @@ services:
       - app-network
     volumes:
       - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--silent"]
+      interval: 5s
+      retries: 3
+      start_period: 5s
+      timeout: 5s
 
   app:
     build:
