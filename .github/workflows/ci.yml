@@ -11,12 +11,17 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: Geslo123
+          MYSQL_DATABASE: user
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping --silent" --health-start-period=30s
 
     steps:
-      - name: Set up SQLite in-memory database
-        run: |
-          echo "DATABASE_URL=sqlite:///:memory:" >> $GITHUB_ENV  # Set SQLite in-memory database URL
-
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -31,14 +36,19 @@ jobs:
           source venv/bin/activate
           pip install -r requirements.txt
 
-      - name: Check environment variables
+      - name: Set up MySQL environment variables
         run: |
-          echo "DATABASE_URL=${DATABASE_URL}"
+          echo "MYSQL_ROOT_PASSWORD=Geslo123" >> $GITHUB_ENV
+          echo "MYSQL_DATABASE=user" >> $GITHUB_ENV
+          echo "MYSQL_USER=root" >> $GITHUB_ENV
+          echo "MYSQL_HOST=localhost" >> $GITHUB_ENV
 
-      - name: Wait for SQLite to be ready
+      - name: Wait for MySQL to be ready
         run: |
-          # SQLite is in-memory, so no waiting is required
-          echo "SQLite database is ready"
+          while ! mysqladmin -h 127.0.0.1 -u root -p$MYSQL_ROOT_PASSWORD ping --silent; do
+            echo "Waiting for MySQL to be ready.."
+            sleep 10
+          done
 
       - name: Run tests
         run: |
