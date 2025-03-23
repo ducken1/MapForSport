@@ -3,57 +3,59 @@ name: Run Tests
 on:
   push:
     branches:
-      - main  # You can change this to whichever branch you prefer
+      - '*'  # Change to the branch you want to monitor, e.g., 'master', 'dev', etc.
+  pull_request:
+    branches:
+      - '*'  # If you want tests to run on pull requests as well
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:8
         env:
-          MYSQL_ROOT_PASSWORD: root_password
-          MYSQL_DATABASE: test_db
-          MYSQL_USER: test_user
-          MYSQL_PASSWORD: test_password
+          MYSQL_ROOT_PASSWORD: "Geslo123"  # Hardcoded root password
+          MYSQL_DATABASE: "user"  # Hardcoded database name
         ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping --silent" --health-timeout=5m --health-retries=5
+          - 3306:3306  # Expose the MySQL port
+        options: >
+          --health-cmd="mysqladmin ping --silent" 
+          --health-interval=10s 
+          --health-timeout=5s 
+          --health-retries=10
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
-        python-version: 3.9
+        python-version: '3.12'
 
     - name: Install dependencies
       run: |
-        python -m venv venv
-        source venv/bin/activate
+        python -m pip install --upgrade pip
         pip install -r requirements.txt
-        pip install pytest
 
-    - name: Set environment variables for the tests
+    - name: Set environment variables
       run: |
-        echo "DB_USER=test_user" >> $GITHUB_ENV
-        echo "DB_PASS=test_password" >> $GITHUB_ENV
-        echo "DB_HOST=127.0.0.1" >> $GITHUB_ENV
-        echo "DB_NAME=test_db" >> $GITHUB_ENV
-        echo "JWT_SECRET=testsecret" >> $GITHUB_ENV
+        echo "DB_HOST=mysql" >> $GITHUB_ENV  # Use service name `mysql` instead of localhost
+        echo "DB_USER=root" >> $GITHUB_ENV  # Hardcoded MySQL user
+        echo "DB_PASS=Geslo123" >> $GITHUB_ENV  # Hardcoded MySQL password
+        echo "DB_NAME=user" >> $GITHUB_ENV  # Hardcoded database name
+        echo "JWT_SECRET=e8694db72620093716a6c0a54ce7936e4bfc134da762595b7599092017c54872" >> $GITHUB_ENV  # Hardcoded JWT secret
 
     - name: Wait for MySQL to be ready
       run: |
-        for i in {1..30}; do
-          nc -zv 127.0.0.1 3306 && break
-          echo "Waiting for MySQL to start.."
-          sleep 1
+        # Retry until MySQL is available
+        until mysql -h 127.0.0.1 -u $DB_USER -p$DB_PASS -e 'SELECT 1'; do
+          echo "Waiting for MySQL to be ready..."
+          sleep 5  # Wait for 5 seconds before retrying
         done
 
     - name: Run tests
       run: |
-        source venv/bin/activate
-        pytest --maxfail=1 --disable-warnings -q
+        pytest
