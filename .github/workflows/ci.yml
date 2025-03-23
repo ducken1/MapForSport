@@ -37,17 +37,18 @@ jobs:
           source venv/bin/activate
           pip install -r requirements.txt
 
+      - name: Set environment variables
+        run: |
+          echo "JWT_SECRET=e8694db72620093716a6c0a54ce7936e4bfc134da762595b7599092017c54872" >> $GITHUB_ENV
+          echo "MYSQL_ROOT_PASSWORD=Geslo123" >> $GITHUB_ENV
+
+
       - name: Wait for MySQL to be ready
         run: |
           while ! mysqladmin -h 127.0.0.1 -u root -p$MYSQL_ROOT_PASSWORD ping --silent; do
             echo "Waiting for MySQL to be ready.."
             sleep 10
           done
-
-      - name: Create database tables
-        run: |
-          source venv/bin/activate
-          PYTHONPATH=$(pwd) python -c "from app.core.database import init_db; init_db()"
 
       - name: Run tests
         run: |
