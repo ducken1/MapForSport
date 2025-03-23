@@ -16,8 +16,8 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_ROOT_PASSWORD: rootpassword
-          MYSQL_DATABASE: testdb
+          MYSQL_ROOT_PASSWORD: Geslo123
+          MYSQL_DATABASE: user
         ports:
           - 3306:3306
         options: >-
@@ -50,7 +50,7 @@ jobs:
 
     - name: Wait for MySQL to be ready
       run: |
-        until mysql -h localhost -u root -prootpassword -e 'SELECT 1'; do
+        until mysql -h localhost -u root -p$MYSQL_PASSWORD -e 'SELECT 1'; do
           echo "Waiting for MySQL to be ready..."
           sleep 5
         done
