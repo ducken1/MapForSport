@@ -17,18 +17,18 @@ jobs:
         options: --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=5
 
     steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+      - name: Install Ubuntu dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install libcurl4-openssl-dev libmysqlclient-dev libgirepository1.0-dev
+      - name: Setup Python
+        uses: actions/setup-python@v3
         with:
-          python-version: 3.9
-
-      - name: Install dependencies
+          python-version: 3.8
+      - name: Install Python dependencies
         run: |
           pip install -r requirements.txt
-
       - name: Wait for database to be ready
         run: |
           sleep 15  # wait for MySQL to initialize
