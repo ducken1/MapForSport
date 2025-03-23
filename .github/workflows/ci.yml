@@ -3,10 +3,7 @@ name: Run Tests
 on:
   push:
     branches:
-      - '*'  # Change to the branch you want to monitor, e.g., 'master', 'dev', etc.
-  pull_request:
-    branches:
-      - '*'  # If you want tests to run on pull requests as well
+      - main  # You can change this to whichever branch you prefer
 
 jobs:
   test:
@@ -18,6 +15,8 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: root_password
           MYSQL_DATABASE: test_db
+          MYSQL_USER: test_user
+          MYSQL_PASSWORD: test_password
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping --silent" --health-timeout=5m --health-retries=5
@@ -38,10 +37,18 @@ jobs:
         pip install -r requirements.txt
         pip install pytest
 
+    - name: Set environment variables for the tests
+      run: |
+        echo "DB_USER=test_user" >> $GITHUB_ENV
+        echo "DB_PASS=test_password" >> $GITHUB_ENV
+        echo "DB_HOST=127.0.0.1" >> $GITHUB_ENV
+        echo "DB_NAME=test_db" >> $GITHUB_ENV
+        echo "JWT_SECRET=testsecret" >> $GITHUB_ENV
+
     - name: Wait for MySQL to be ready
       run: |
         for i in {1..30}; do
-          nc -zv mysql 3306 && break
+          nc -zv 127.0.0.1 3306 && break
           echo "Waiting for MySQL to start..."
           sleep 1
         done
