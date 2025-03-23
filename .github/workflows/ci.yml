@@ -34,11 +34,6 @@ jobs:
         run: |
           sleep 15  # wait for MySQL to initialize
 
-      - name: Run database migrations
-        run: |
-          # Run your migration command here
-          alembic upgrade head  # This is for Alembic migrations. Use the appropriate migration command for your setup.
-
       - name: Run tests
         run: |
           pytest
