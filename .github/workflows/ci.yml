@@ -47,7 +47,7 @@ jobs:
       - name: Create database tables
         run: |
           source venv/bin/activate
-          python -c "from app.core.database import init_db; init_db()"
+          PYTHONPATH=$(pwd) python -c "from app.core.database import init_db; init_db()"
 
       - name: Run tests
         run: |
