@@ -12,3 +12,4 @@ db_name = os.getenv("MYSQL_DATABASE", "user")
 
 # Build the connection URL
 DATABASE_URL = f"mysql+mysqlconnector://{db_user}:{db_password}@{db_host}/{db_name}"
+JWT_SECRET = os.getenv("JWT_SECRET", "e8694db72620093716a6c0a54ce7936e4bfc134da762595b7599092017c54872")

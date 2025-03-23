@@ -37,10 +37,14 @@ jobs:
           source venv/bin/activate
           pip install -r requirements.txt
 
+      - name: Check JWT_SECRET
+        run: echo "JWT_SECRET=${JWT_SECRET}"
+
       - name: Set environment variables
         run: |
           echo "JWT_SECRET=e8694db72620093716a6c0a54ce7936e4bfc134da762595b7599092017c54872" >> $GITHUB_ENV
           echo "MYSQL_ROOT_PASSWORD=Geslo123" >> $GITHUB_ENV
+          echo "MYSQL_DATABASE=user" >> $GITHUB_ENV
 
 
       - name: Wait for MySQL to be ready
