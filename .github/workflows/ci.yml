@@ -12,7 +12,6 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: Geslo123
           MYSQL_DATABASE: user
-          MYSQL_USER: root
           MYSQL_PASSWORD: testpass123
         ports:
           - 3306:3306
