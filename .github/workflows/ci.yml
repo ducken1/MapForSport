@@ -30,6 +30,7 @@ jobs:
       - name: Run tests with SQLite
         env:
           TESTING: "true"
+          DATABASE_URL: "mysql+mysqlconnector://root:Geslo123@127.0.0.1:3306/user"
         run: |
           source venv/bin/activate
           PYTHONPATH=$PWD pytest --maxfail=1 --disable-warnings -q
