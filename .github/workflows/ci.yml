@@ -1,36 +1,57 @@
-name: Run Tests
+name: CI Tests
 
-on:
-  push:
-    branches:
-      - '*'
-  pull_request:
-    branches:
-      - '*'
+on: [push, pull_request]
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: Geslo123
+          MYSQL_DATABASE: user
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -u root --password=Geslo123"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      MYSQL_HOST: 127.0.0.1
+      MYSQL_USER: root
+      MYSQL_PASSWORD: Geslo123
+      MYSQL_DATABASE: user
+      DATABASE_URL: mysql+mysqlconnector://root:Geslo123@127.0.0.1/user
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      - name: Set Up Python
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: "3.11"
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: |
-          python -m venv venv
-          source venv/bin/activate
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run tests with SQLite
-        env:
-          TESTING: "true"
-          DATABASE_URL: "mysql+mysqlconnector://root:Geslo123@127.0.0.1:3306/user"
+      - name: Wait for MySQL to be Ready
         run: |
-          source venv/bin/activate
-          PYTHONPATH=$PWD pytest --maxfail=1 --disable-warnings -q
+          echo "Waiting for MySQL..."
+          until mysqladmin ping -h 127.0.0.1 -u root --password=Geslo123 --silent; do
+            sleep 1
+          done
+          echo "MySQL is ready."
+
+      - name: Run Database Migrations
+        run: |
+          python -c 'from app.core.database import init_db; init_db()'
+
+      - name: Run Tests
+        run: pytest --disable-warnings
