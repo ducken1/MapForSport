@@ -3,14 +3,18 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from app.routes import user
 from app.core.database import init_db
-
+from app.core.logger import logger
 
 app = FastAPI()
 
 @app.on_event("startup")
 def on_startup():
-    # Initialize DB (create tables)
-    init_db()
+    try:
+        # Initialize DB (create tables)
+        init_db()
+        logger.info("Database tables created successfully.")
+    except Exception as e:
+        logger.error(f"Error creating tables: {str(e)}")
 
 
 app.include_router(user.router, prefix="/users", tags=["users"])

@@ -3,10 +3,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DATABASE_URL = f"mysql+mysqlconnector://{os.getenv('DB_USER')}:{os.getenv('DB_PASS')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
-JWT_SECRET = os.getenv("JWT_SECRET")
-import os
-
+# For local development, the default host is localhost.
+# In CI (GitHub Actions), the service name should be used (mysql).
 db_host = os.getenv("MYSQL_HOST", "localhost")  # default to localhost if not set
 db_user = os.getenv("MYSQL_USER", "root")
 db_password = os.getenv("MYSQL_PASSWORD", "Geslo123")
