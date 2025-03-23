@@ -11,9 +11,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
     steps:
-      # Checkout the repository code
+      # Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -21,7 +21,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: "3.8"  # You can change this to your Python version
+          python-version: 3.9  # Use the Python version you need
 
       # Install dependencies
       - name: Install dependencies
@@ -32,9 +32,4 @@ jobs:
       # Run the tests
       - name: Run tests
         run: |
-          pytest  # Make sure pytest is included in your requirements.txt
-
-      # Optionally, you can upload test results to GitHub if you use a test reporting tool like pytest-cov
-      - name: Upload Test Coverage Report
-        if: success()
-        uses: codecov/codecov-action@v2
+          pytest tests  # Ensure 'tests' is the folder where your test files are located
