@@ -10,7 +10,7 @@ jobs:
       db:
         image: mysql:latest
         env:
-          MYSQL_ROOT_PASSWORD: Geslo123
+          MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: user
         ports:
           - 3306:3306
