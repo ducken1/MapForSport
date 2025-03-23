@@ -1,12 +1,12 @@
-name: FastAPI Testing with MySQL
+name: Run Tests
 
 on:
   push:
     branches:
-      - main
+      - '*'
   pull_request:
     branches:
-      - main
+      - '*'
 
 jobs:
   test:
@@ -53,4 +53,3 @@ jobs:
           JWT_SECRET: e8694db72620093716a6c0a54ce7936e4bfc134da762595b7599092017c54872
         run: |
           pytest tests/test_user.py  # Adjust the path to your test file
-
