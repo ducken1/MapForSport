@@ -14,9 +14,7 @@ Sistem je sestavljen iz treh mikrostoritev in spletne aplikacije:
 - Omogočanje iskanja prostih terminov.
 
 ### 🔹 Booking Service (`services/booking`)
-- Rezervacija terminov in njihovo potrjevanje.
-- Odpovedi in ponovna rezervacija.
-- Obdelava plačil (če je potrebno).
+- Rezervacija terminov in njihov status.
 
 ### 🔹 User Service (`services/user`)
 - Registracija in prijava uporabnikov.
