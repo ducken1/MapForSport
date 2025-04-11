@@ -1,0 +1,55 @@
+name: CI/CD Pipeline for Booking Service
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to the main branch
+  pull_request:
+    branches:
+      - main  # Trigger on pull request to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu image for the job
+
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Java environment (JDK 17)
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'  # Use JDK 17
+          distribution: 'temurin'  # Use temurin for the JDK distribution
+
+      # Step 3: Cache Maven dependencies (optional, to speed up builds)
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository  # Cache Maven dependencies
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}  # Use pom.xml to cache dependencies
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # Step 4: Navigate to the project directory
+      - name: Navigate to project directory
+        run: |
+          cd services/booking/booking-service  # Change to your booking service directory
+          ls  # List files to ensure pom.xml is there
+
+      # Step 5: Build the application (skip tests)
+      - name: Build with Maven (skip tests)
+        run: |
+          mvn clean install -DskipTests  # Skip tests during the build phase
+
+      # Step 6: Run tests123
+      - name: Run unit tests
+        run: |
+          mvn test  # Run your unit tests
+
+      # Step 7: Build Docker image (optional, if needed)
+      - name: Build Docker image (optional)
+        run: |
+          docker build -t my-booking-service -f Dockerfile .  # Replace with the correct Dockerfile path if needed
