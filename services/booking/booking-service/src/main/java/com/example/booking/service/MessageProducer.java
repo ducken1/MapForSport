@@ -23,17 +23,21 @@ public class MessageProducer {
         this.amqpTemplate = amqpTemplate;
     }
 
-    public Mono<Void> sendMessage(String message) {
-        logger.info("Sending message to RabbitMQ: {}", message);
-        return Mono.fromRunnable(() -> {
-            try {
-                amqpTemplate.convertAndSend(exchangeName, routingKey, message);
-                logger.debug("Message sent successfully to exchange: {} with routing key: {}", exchangeName, routingKey);
-            } catch (Exception e) {
-                logger.error("Failed to send message to RabbitMQ", e);
-            }
-        });
-    }
+public Mono<Void> sendMessage(String message) {
+    logger.info("Sending message to RabbitMQ: {}", message);
+    return Mono.defer(() -> {
+        try {
+            amqpTemplate.convertAndSend(exchangeName, routingKey, message);
+            logger.debug("Message sent successfully to exchange: {} with routing key: {}", exchangeName, routingKey);
+            return Mono.empty();  // Successfully sent, return an empty Mono
+        } catch (Exception e) {
+            logger.error("Failed to send message to RabbitMQ", e);
+            return Mono.error(e);  // Return Mono.error if something went wrong
+        }
+    });
+}
+
+
 
 
 }

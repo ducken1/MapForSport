@@ -9,7 +9,7 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class ReservationServiceTest {
 
@@ -35,14 +35,20 @@ class ReservationServiceTest {
         reservation.setUserId("user1");
         reservation.setFacilityName("Room A");  // Use setFacilityName instead of setRoom
         reservation.setStatus("confirmed");
-    
+
         // Mock repository save method to return the reservation
         when(reservationRepository.save(reservation)).thenReturn(Mono.just(reservation));
-    
+
+        // Mock messageProducer sendMessage method to return Mono.empty()
+        when(messageProducer.sendMessage(anyString())).thenReturn(Mono.empty());
+
         // StepVerifier to test the flow of reservation creation
         StepVerifier.create(reservationService.createReservation(reservation))
                 .expectNextMatches(res -> res.getId().equals(reservationId))
                 .verifyComplete();
+
+        // Verify that the sendMessage method was called once
+        verify(messageProducer, times(1)).sendMessage(anyString());
     }
 
     @Test
@@ -70,8 +76,14 @@ class ReservationServiceTest {
         // Mock repository deleteById method to simulate a successful deletion
         when(reservationRepository.deleteById(reservationId)).thenReturn(Mono.empty());
 
+        // Mock messageProducer sendMessage method to return Mono.empty()
+        when(messageProducer.sendMessage(anyString())).thenReturn(Mono.empty());
+
         // StepVerifier to test canceling the reservation
         StepVerifier.create(reservationService.cancelReservation(reservationId))
                 .verifyComplete();
+
+        // Verify that the sendMessage method was called once
+        verify(messageProducer, times(1)).sendMessage(anyString());
     }
 }
