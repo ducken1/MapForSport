@@ -1,6 +1,6 @@
-package com.example.booking.messaging;
+package com.example.booking.controller;
 
-import com.example.booking.messaging.MessageProducer;
+import com.example.booking.service.MessageProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;

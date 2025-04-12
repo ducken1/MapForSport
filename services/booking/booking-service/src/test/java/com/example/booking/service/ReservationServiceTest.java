@@ -1,7 +1,7 @@
-package com.example.booking.reservation;
+package com.example.booking.service;
 
-import com.example.booking.reservation.Reservation;
-import com.example.booking.reservation.ReservationRepository;
+import com.example.booking.model.Reservation;
+import com.example.booking.repository.ReservationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

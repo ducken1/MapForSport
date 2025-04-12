@@ -1,6 +1,6 @@
-package com.example.booking.reservation;
+package com.example.booking.controller;
 
-import com.example.booking.messaging.MessageProducer;
+import com.example.booking.service.MessageProducer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
