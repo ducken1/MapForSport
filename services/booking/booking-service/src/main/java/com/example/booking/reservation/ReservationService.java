@@ -1,6 +1,6 @@
 package com.example.booking.reservation;
 
-import com.example.booking.messaging.MessageProducer
+import com.example.booking.messaging.MessageProducer;
 import com.example.booking.reservation.Reservation;
 import com.example.booking.reservation.ReservationRepository;
 import org.slf4j.Logger;
