@@ -1,4 +1,4 @@
-package com.example.booking.controller;
+package com.example.booking.reservation;
 
 import com.example.booking.messaging.MessageProducer;
 import org.junit.jupiter.api.BeforeEach;
