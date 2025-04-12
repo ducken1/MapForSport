@@ -1,4 +1,4 @@
-package com.example.booking.service;
+package com.example.booking.messaging;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,7 +1,7 @@
-package com.example.booking.service;
+package com.example.booking.reservation;
 
-import com.example.booking.model.Reservation;
-import com.example.booking.repository.ReservationRepository;
+import com.example.booking.reservation.Reservation;
+import com.example.booking.reservation.ReservationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

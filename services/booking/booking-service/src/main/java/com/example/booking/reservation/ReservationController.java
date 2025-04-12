@@ -1,7 +1,7 @@
-package com.example.booking.controller;
+package com.example.booking.reservation;
 
-import com.example.booking.model.Reservation;
-import com.example.booking.service.ReservationService;
+import com.example.booking.reservation.Reservation;
+import com.example.booking.reservation.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;

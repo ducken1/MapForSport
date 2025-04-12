@@ -1,4 +1,4 @@
-package com.example.booking.model;
+package com.example.booking.reservation;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

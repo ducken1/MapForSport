@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   booking-service:
-    build: ./services/booking/booking-service  # Path to your booking service directory
+    build: ./services/booking/booking-service  
     container_name: booking-service
     ports:
       - "8080:8080"
@@ -28,8 +28,8 @@ services:
     image: rabbitmq:management
     container_name: rabbitmq
     ports:
-      - "15672:15672"  # RabbitMQ management UI
-      - "5672:5672"    # RabbitMQ broker
+      - "15672:15672"  # RabbitMQ
+      - "5672:5672"    
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
