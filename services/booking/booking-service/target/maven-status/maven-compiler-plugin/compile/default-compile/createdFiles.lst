@@ -1,9 +1,9 @@
+com\example\booking\messaging\MessageController.class
 com\example\booking\config\RabbitConfig.class
-com\example\booking\service\ReservationService.class
-com\example\booking\model\Reservation.class
-com\example\booking\controller\ReservationController.class
-com\example\booking\service\MessageListener.class
-com\example\booking\controller\MessageController.class
+com\example\booking\messaging\MessageListener.class
+com\example\booking\messaging\MessageProducer.class
+com\example\booking\reservation\Reservation.class
+com\example\booking\reservation\ReservationController.class
+com\example\booking\reservation\ReservationRepository.class
 com\example\booking\BookingApplication.class
-com\example\booking\repository\ReservationRepository.class
-com\example\booking\service\MessageProducer.class
+com\example\booking\reservation\ReservationService.class

@@ -1,4 +1,4 @@
-package com.example.booking.service;
+package com.example.booking.reservation;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

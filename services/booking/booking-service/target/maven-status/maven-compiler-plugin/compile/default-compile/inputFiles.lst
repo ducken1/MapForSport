@@ -1,9 +1,9 @@
 C:\Users\duckeN\Desktop\MapForSport\services\booking\booking-service\src\main\java\com\example\booking\BookingApplication.java
 C:\Users\duckeN\Desktop\MapForSport\services\booking\booking-service\src\main\java\com\example\booking\config\RabbitConfig.java
-C:\Users\duckeN\Desktop\MapForSport\services\booking\booking-service\src\main\java\com\example\booking\controller\MessageController.java
-C:\Users\duckeN\Desktop\MapForSport\services\booking\booking-service\src\main\java\com\example\booking\controller\ReservationController.java
-C:\Users\duckeN\Desktop\MapForSport\services\booking\booking-service\src\main\java\com\example\booking\model\Reservation.java
-C:\Users\duckeN\Desktop\MapForSport\services\booking\booking-service\src\main\java\com\example\booking\repository\ReservationRepository.java
-C:\Users\duckeN\Desktop\MapForSport\services\booking\booking-service\src\main\java\com\example\booking\service\MessageListener.java
-C:\Users\duckeN\Desktop\MapForSport\services\booking\booking-service\src\main\java\com\example\booking\service\MessageProducer.java
-C:\Users\duckeN\Desktop\MapForSport\services\booking\booking-service\src\main\java\com\example\booking\service\ReservationService.java
+C:\Users\duckeN\Desktop\MapForSport\services\booking\booking-service\src\main\java\com\example\booking\messaging\MessageController.java
+C:\Users\duckeN\Desktop\MapForSport\services\booking\booking-service\src\main\java\com\example\booking\messaging\MessageListener.java
+C:\Users\duckeN\Desktop\MapForSport\services\booking\booking-service\src\main\java\com\example\booking\messaging\MessageProducer.java
+C:\Users\duckeN\Desktop\MapForSport\services\booking\booking-service\src\main\java\com\example\booking\reservation\Reservation.java
+C:\Users\duckeN\Desktop\MapForSport\services\booking\booking-service\src\main\java\com\example\booking\reservation\ReservationController.java
+C:\Users\duckeN\Desktop\MapForSport\services\booking\booking-service\src\main\java\com\example\booking\reservation\ReservationRepository.java
+C:\Users\duckeN\Desktop\MapForSport\services\booking\booking-service\src\main\java\com\example\booking\reservation\ReservationService.java
