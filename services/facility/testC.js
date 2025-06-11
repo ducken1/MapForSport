@@ -4,85 +4,72 @@ const protoLoader = require('@grpc/proto-loader');
 const packageDefinition = protoLoader.loadSync('./facility.proto', {});
 const facilityProto = grpc.loadPackageDefinition(packageDefinition).facility;
 
-
 const client = new facilityProto.FacilityService('localhost:50051', grpc.credentials.createInsecure());
 
-
-const createFacility = (name, description) => {
-  return new Promise((resolve, reject) => {
-    client.CreateFacility({ name, description }, (error, response) => {
-      if (error) {
-        reject('Error creating Facility: ' + error);
-      } else {
-        console.log('Facility created:', response);
-        resolve(response.id); 
-      }
-    });
+const createFacility = (name, description) => new Promise((resolve, reject) => {
+  client.CreateFacility({ name, description }, (err, res) => {
+    if (err) return reject(err);
+    console.log('Facility created:', res);
+    resolve(res.id);
   });
-};
+});
 
-
-const getFacility = (facilityId) => {
-  return new Promise((resolve, reject) => {
-    client.GetFacility({ id: facilityId }, (error, response) => {
-      if (error) {
-        reject('Error getting Facility: ' + error);
-      } else {
-        console.log('Facility details:', response);
-        resolve(response); 
-      }
-    });
+const getFacility = (id) => new Promise((resolve, reject) => {
+  client.GetFacility({ id }, (err, res) => {
+    if (err) return reject(err);
+    console.log('Facility details:', res);
+    resolve(res);
   });
-};
+});
 
-
-const updateFacility = (facilityId, name, description) => {
-  return new Promise((resolve, reject) => {
-    client.UpdateFacility({ id: facilityId, name, description }, (error, response) => {
-      if (error) {
-        reject('Error updating Facility: ' + error);
-      } else {
-        console.log('Facility updated:', response);
-        resolve(response); 
-      }
-    });
+const updateFacility = (id, name, description) => new Promise((resolve, reject) => {
+  client.UpdateFacility({ id, name, description }, (err, res) => {
+    if (err) return reject(err);
+    console.log('Facility updated:', res);
+    resolve(res);
   });
-};
+});
 
-
-const deleteFacility = (facilityId) => {
-  return new Promise((resolve, reject) => {
-    client.DeleteFacility({ id: facilityId }, (error, response) => {
-      if (error) {
-        reject('Error deleting Facility: ' + error);
-      } else {
-        console.log('Facility deleted:', response);
-        resolve(response); 
-      }
-    });
+const deleteFacility = (id) => new Promise((resolve, reject) => {
+  client.DeleteFacility({ id }, (err, res) => {
+    if (err) return reject(err);
+    console.log('Facility deleted:', res);
+    resolve(res);
   });
-};
+});
 
+const addAvailableTime = (facilityId, time) => new Promise((resolve, reject) => {
+  client.AddAvailableTime({ facilityId, time }, (err, res) => {
+    if (err) return reject(err);
+    console.log('Available time added:', res);
+    resolve(res);
+  });
+});
+
+const removeAvailableTime = (facilityId, start, end) => new Promise((resolve, reject) => {
+  client.RemoveAvailableTime({ facilityId, start, end }, (err, res) => {
+    if (err) return reject(err);
+    console.log('Available time removed:', res);
+    resolve(res);
+  });
+});
 
 const testFacilityMethods = async () => {
   try {
-    
-    const facilityId = await createFacility('Facility 1', 'Opis facility');
+    const id = await createFacility('Facility 1', 'Opis facility');
 
-    const facility2Id = await createFacility('Facility 2', 'Opis facility 2');
-    
-    //CRUD
-    await getFacility(facilityId);
+    await getFacility(id);
 
+    await updateFacility(id, 'Posodobljena Facility', 'Posodobljen opis facility');
 
-    await getFacility(facility2Id);
+    const newTime = { start: '2025-06-11T14:00:00Z', end: '2025-06-11T15:00:00Z' };
+    await addAvailableTime(id, newTime);
 
-    await updateFacility(facilityId, 'Posodobljena Facility', 'Posodobljen opis facility');
-    
+    await removeAvailableTime(id, newTime.start, newTime.end);
 
-    await deleteFacility(facilityId);
+    await deleteFacility(id);
   } catch (error) {
-    console.error('Napaka med izvajanjem metod:', error);
+    console.error('Error during facility methods test:', error);
   }
 };
 
