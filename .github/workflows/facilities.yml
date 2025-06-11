@@ -1,58 +1,53 @@
-name: CI/CD Pipeline
+stages:
+  - build
+  - test
+  - deploy
 
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+variables:
+  MONGO_URI: "mongodb://mongo:27017/facilities"
 
-jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
+services:
+  - name: mongo:latest
+    alias: mongo
 
-    services:
-      mongo:
-        image: mongo:latest
-        ports:
-          - 27017:27017
-        options: >-
-          --health-cmd="mongo --eval 'db.adminCommand(\"ping\")'"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
+build_image:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker build -t my-facility-service .
+  artifacts:
+    paths:
+      - server.log
+  only:
+    - main
 
-    env:
-      MONGO_URI: mongodb://localhost:27017/facilities_test_db
+test_service:
+  stage: test
+  image: docker:latest
+  services:
+    - docker:dind
+    - name: mongo:latest
+      alias: mongo
+  script:
+    # Run your container linked with mongo and wait for readiness
+    - docker run -d --name mongo_test mongo:latest
+    - docker run -d --name facility_test --link mongo_test:mongo -p 50051:50051 -e MONGO_URI=mongodb://mongo:27017/facilities my-facility-service
+    - sleep 10 # wait for server + mongo to be ready
+    # Here you could run integration tests calling gRPC endpoints, e.g.:
+    # - npm run test
+    - docker logs facility_test
+  after_script:
+    - docker rm -f facility_test mongo_test
+  only:
+    - main
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Use Node.js 16
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Wait for MongoDB to be ready
-        run: |
-          until mongo --eval 'db.adminCommand("ping")' >/dev/null 2>&1; do
-            echo "Waiting for MongoDB..."
-            sleep 5
-          done
-
-      - name: Run tests
-        run: npm test
-        env:
-          MONGO_URI: ${{ env.MONGO_URI }}
-
-      - name: Build Docker image
-        run: docker build -t your-dockerhub-username/revije:latest .
-
-
-      - name: Push Docker image
-        run: docker push your-dockerhub-username/revije:latest
+deploy_service:
+  stage: deploy
+  image: docker:latest
+  script:
+    # Deploy your service somewhere (e.g. push to a registry, or ssh deploy)
+    - echo "Deploy step - customize as needed"
+  only:
+    - main
