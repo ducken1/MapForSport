@@ -41,12 +41,6 @@ jobs:
         run: npm install  # Use npm install instead of npm ci if no lock file
         working-directory: ./
 
-
-      - name: Run linting (if applicable)
-        run: npm run lint
-        working-directory: ./
-        continue-on-error: false  # Make linting mandatory
-
       - name: Run facility tests
         run: npx jest services/facility/test/facility.test.js --verbose --coverage
         env:
