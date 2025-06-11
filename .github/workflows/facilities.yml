@@ -36,4 +36,5 @@ jobs:
         run: docker logs mongodb
 
       - name: Run facility tests
-        run: npx jest facility/testC.js
+        run: npx jest services/facility/testC.js
+
