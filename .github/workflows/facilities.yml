@@ -1,53 +1,40 @@
-stages:
-  - build
-  - test
-  - deploy
+name: Run Unit Tests for Facilities
 
-variables:
-  MONGO_URI: "mongodb://mongo:27017/facilities"
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
-services:
-  - name: mongo:latest
-    alias: mongo
+jobs:
+  test:
+    runs-on: ubuntu-latest
 
-build_image:
-  stage: build
-  image: docker:latest
-  services:
-    - docker:dind
-  script:
-    - docker build -t my-facility-service .
-  artifacts:
-    paths:
-      - server.log
-  only:
-    - main
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2
 
-test_service:
-  stage: test
-  image: docker:latest
-  services:
-    - docker:dind
-    - name: mongo:latest
-      alias: mongo
-  script:
-    # Run your container linked with mongo and wait for readiness
-    - docker run -d --name mongo_test mongo:latest
-    - docker run -d --name facility_test --link mongo_test:mongo -p 50051:50051 -e MONGO_URI=mongodb://mongo:27017/facilities my-facility-service
-    - sleep 10 # wait for server + mongo to be ready
-    # Here you could run integration tests calling gRPC endpoints, e.g.:
-    # - npm run test
-    - docker logs facility_test
-  after_script:
-    - docker rm -f facility_test mongo_test
-  only:
-    - main
+      - name: Set up Node.js 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
 
-deploy_service:
-  stage: deploy
-  image: docker:latest
-  script:
-    # Deploy your service somewhere (e.g. push to a registry, or ssh deploy)
-    - echo "Deploy step - customize as needed"
-  only:
-    - main
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./  # Adjust if your code is inside a subfolder, e.g. ./services/facilities
+
+      - name: Start MongoDB container
+        run: |
+          docker pull mongo:latest
+          docker run --name mongodb -d -p 27017:27017 mongo:latest
+          # Wait for MongoDB to be ready
+          sleep 30
+
+      - name: Check MongoDB logs
+        run: docker logs mongodb
+
+      - name: Run unit tests
+        run: npx jest
+        working-directory: ./  # Adjust if needed

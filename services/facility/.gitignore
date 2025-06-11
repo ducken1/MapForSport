@@ -22,7 +22,7 @@ coverage/
 .env
 
 # Docker
-docker-compose.override.yml
+docker-compose.yml
 Dockerfile.dev
 
 # Debug datoteke

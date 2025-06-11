@@ -1,2 +1,43 @@
+# Node.js dependencies
+node_modules/
+
+# Nastavitve za MongoDB
+*.log
+*.pid
+*.gz
+
+# Nastavitve za IDE (Visual Studio Code, IntelliJ IDEA, itd.)
+.vscode/
+.idea/
+
+# Nastavitve za npm/yarn
+package-lock.json
+yarn.lock
+
+# Testni rezultati
+coverage/
+*.lcov
+
+# Preklicana konfiguracija
 .env
-.yml
+
+# Docker
+docker-compose.yml
+Dockerfile.dev
+
+# Debug datoteke
+*.swp
+*.swo
+
+# IntelliJ IDEA specifične datoteke
+*.iml
+out/
+
+# Nastavitve za jest (testni izidi, itd.)
+jest-debug.log
+jest-cache/
+
+# Log datoteke
+npm-debug.log
+yarn-debug.log
+yarn-error.log
