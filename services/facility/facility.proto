@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package facility;
+
+
+message CreateFacilityRequest {
+  string name = 1;
+  string description = 2;
+}
+
+message GetFacilityRequest {
+  string id = 1;
+}
+
+message UpdateFacilityRequest {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+}
+
+message DeleteFacilityRequest {
+  string id = 1;
+}
+
+
+message DeleteResponse {
+  bool success = 1;
+}
+
+message AvailableTime {
+  string start = 1; // ISO 8601 format (e.g., "2025-06-11T14:00:00Z")
+  string end = 2;
+}
+
+message Facility {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  repeated AvailableTime availableTimes = 4;
+}
+
+message AddAvailableTimeRequest {
+  string facilityId = 1;
+  AvailableTime time = 2;
+}
+
+message RemoveAvailableTimeRequest {
+  string facilityId = 1;
+  string start = 2; // use start datetime to find & remove
+  string end = 3;
+}
+
+message AvailableTimesResponse {
+  repeated AvailableTime availableTimes = 1;
+}
+
+service FacilityService {
+  rpc CreateFacility (CreateFacilityRequest) returns (Facility);
+  rpc GetFacility (GetFacilityRequest) returns (Facility);
+  rpc UpdateFacility (UpdateFacilityRequest) returns (Facility);
+  rpc DeleteFacility (DeleteFacilityRequest) returns (DeleteResponse);
+
+  
+  rpc AddAvailableTime (AddAvailableTimeRequest) returns (Facility);
+  rpc RemoveAvailableTime (RemoveAvailableTimeRequest) returns (Facility);
+}
