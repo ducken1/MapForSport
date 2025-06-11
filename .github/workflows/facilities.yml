@@ -4,37 +4,72 @@ on:
   push:
     branches:
       - master
+      - main  # Include main branch as well
   pull_request:
     branches:
       - master
+      - main
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
+    # Add service container for MongoDB (cleaner approach)
+    services:
+      mongodb:
+        image: mongo:5.0  # Use specific version for consistency
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.runCommand({ping: 1})'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4  # Updated to latest version
 
-      - name: Set up Node.js 16
-        uses: actions/setup-node@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v4  # Updated to latest version
         with:
-          node-version: '16'
+          node-version: '18'  # Updated to more recent LTS version
+          cache: 'npm'  # Cache npm dependencies
 
       - name: Install dependencies
-        run: npm install
-        working-directory: ./  # Adjust if your code is inside a subfolder, e.g. ./services/facilities
+        run: npm ci  # Use npm ci for faster, reliable installs in CI
+        working-directory: ./
 
-      - name: Start MongoDB container
+      - name: Wait for MongoDB to be ready
         run: |
-          docker pull mongo:latest
-          docker run --name mongodb -d -p 27017:27017 mongo:latest
-          # Wait for MongoDB to be ready
-          sleep 30
+          until mongosh --eval "db.runCommand({ping: 1})" > /dev/null 2>&1; do
+            echo "Waiting for MongoDB to be ready..."
+            sleep 2
+          done
+          echo "MongoDB is ready!"
 
-      - name: Check MongoDB logs
-        run: docker logs mongodb
+      - name: Run linting (if applicable)
+        run: npm run lint
+        working-directory: ./
+        continue-on-error: false  # Make linting mandatory
 
       - name: Run facility tests
-        run: npx jest services/facility/test/facility.test.js
+        run: npx jest services/facility/test/facility.test.js --verbose --coverage
+        env:
+          NODE_ENV: test
+          # Add any environment variables your tests need
+          MONGODB_URI: mongodb://localhost:27017/test_db
 
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v3
+        if: success()
+        with:
+          file: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+
+      - name: Clean up
+        if: always()
+        run: |
+          # Clean up test data if needed
+          echo "Cleaning up test artifacts..."

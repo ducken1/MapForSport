@@ -1,20 +1,8 @@
 version: '3'
 services:
-  facilitiy:
+  facility:
     build: .
     ports:
       - "50051:50051"
     environment:
-      - MONGO_URI=mongodb+srv://dukenotest:Geslo123@booking.aysoug6.mongodb.net/
-    depends_on:
-      - mongo
-
-  mongo:
-    image: mongo:latest
-    ports:
-      - "27017:27017"
-    volumes:
-      - facilities_db:/data/db
-
-volumes:
-  facilities_db:
+      - MONGO_URI=mongodb://host.docker.internal:27017/facilities
