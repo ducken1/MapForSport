@@ -1,8 +1,0 @@
-version: '3'
-services:
-  facility:
-    build: .
-    ports:
-      - "50051:50051"
-    environment:
-      - MONGO_URI=mongodb://host.docker.internal:27017/facilities
