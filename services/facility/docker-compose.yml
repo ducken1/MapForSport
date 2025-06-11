@@ -1,6 +1,6 @@
 version: '3'
 services:
-  revije:
+  facilitiy:
     build: .
     ports:
       - "50051:50051"
