@@ -67,3 +67,37 @@
 {"level":"info","message":"Removed available time from facility 6849073f7648629687691c32 via web gateway"}
 {"level":"info","message":"DELETE /web/facilities/6849073f7648629687691c32 - Web Gateway"}
 {"level":"info","message":"Deleted facility 6849073f7648629687691c32 via web gateway"}
+{"level":"info","message":"Web API Gateway running on port 3000"}
+{"level":"info","message":"POST /users/register - Web Gateway"}
+{"level":"error","message":"Error proxying /users/register: "}
+{"level":"info","message":"Web API Gateway running on port 3000"}
+{"level":"info","message":"GET /users/register - Web Gateway"}
+{"level":"info","message":"POST /users/register - Web Gateway"}
+{"level":"info","message":"POST /users/login - Web Gateway"}
+{"level":"info","message":"POST /users/register - Web Gateway"}
+{"level":"info","message":"POST /users/register - Web Gateway"}
+{"level":"info","message":"POST /users/register - Web Gateway"}
+{"level":"info","message":"POST /users/register - Web Gateway"}
+{"level":"info","message":"POST /users/register - Web Gateway"}
+{"level":"info","message":"Web API Gateway running on port 3000"}
+{"level":"info","message":"GET /web/reservations/6132 - Web Gateway"}
+{"level":"info","message":"Retrieved reservation 6132 via web gateway"}
+{"level":"info","message":"GET /web/facilities/6849073f7648629687691c32 - Web Gateway"}
+{"level":"error","message":"Error getting facility: 14 UNAVAILABLE: No connection established. Last error: Error: connect ECONNREFUSED 127.0.0.1:50051"}
+{"level":"info","message":"POST /web/facilities - Web Gateway"}
+{"level":"error","message":"Error creating facility: 14 UNAVAILABLE: No connection established. Last error: Error: connect ECONNREFUSED ::1:50051"}
+{"level":"info","message":"POST /web/facilities - Web Gateway"}
+{"level":"info","message":"Created facility via web gateway"}
+{"level":"info","message":"GET /web/facilities/684914527cb23722864a4606 - Web Gateway"}
+{"level":"info","message":"Retrieved facility 684914527cb23722864a4606 via web gateway"}
+{"level":"info","message":"Web API Gateway running on port 3000"}
+{"level":"info","message":"POST /users/register - Web Gateway"}
+{"level":"info","message":"POST /users/register - Web Gateway"}
+{"level":"info","message":"POST /web/register - Web Gateway"}
+{"level":"info","message":"POST /web/register - Web Gateway"}
+{"level":"info","message":"POST /web/register - Web Gateway"}
+{"level":"info","message":"POST /web/register - Web Gateway"}
+{"level":"info","message":"POST /web/register - Web Gateway"}
+{"level":"info","message":"Web API Gateway running on port 3000"}
+{"level":"info","message":"GET /web/reservations/6132 - Web Gateway"}
+{"level":"info","message":"Retrieved reservation 6132 via web gateway"}

@@ -41,6 +41,34 @@ app.use((req, res, next) => {
   next();
 });
 
+// User registration
+app.post('/web/users/register', async (req, res) => {
+  try {
+    const response = await axios.post(`${AUTH_SERVICE_URL}/users/register`, req.body);
+    res.status(response.status).json(response.data);
+  } catch (error) {
+    if (error.response) {
+      // Forward error status & message from FastAPI
+      res.status(error.response.status).json(error.response.data);
+    } else {
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+});
+
+// User login
+app.post('/web/users/login', async (req, res) => {
+  try {
+    const response = await axios.post(`${AUTH_SERVICE_URL}/users/login`, req.body);
+    res.status(response.status).json(response.data);
+  } catch (error) {
+    if (error.response) {
+      res.status(error.response.status).json(error.response.data);
+    } else {
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+});
 
 
 // ============= FACILITY ROUTES (gRPC) =============
@@ -158,7 +186,41 @@ app.delete('/web/facilities/:id/available-times', (req, res) => {
 
 // ============= RESERVATION ROUTES =============
 
+// Create reservation
+app.post('/web/reservations', async (req, res) => {
+  try {
+    const response = await axios.post(`${RESERVATION_SERVICE_URL}/reservations`, req.body);
+    logger.info('Reservation created via web gateway');
+    res.json(response.data);
+  } catch (error) {
+    logger.error(`Error creating reservation: ${error.message}`);
+    res.status(500).json({ error: 'Failed to create reservation' });
+  }
+});
 
+// Get reservation
+app.get('/web/reservations/:id', async (req, res) => {
+  try {
+    const response = await axios.get(`${RESERVATION_SERVICE_URL}/reservations/${req.params.id}`);
+    logger.info(`Retrieved reservation ${req.params.id} via web gateway`);
+    res.json(response.data);
+  } catch (error) {
+    logger.error(`Error getting reservation: ${error.message}`);
+    res.status(404).json({ error: 'Reservation not found' });
+  }
+});
+
+// Cancel reservation
+app.delete('/web/reservations/:id', async (req, res) => {
+  try {
+    await axios.delete(`${RESERVATION_SERVICE_URL}/reservations/${req.params.id}`);
+    logger.info(`Cancelled reservation ${req.params.id} via web gateway`);
+    res.json({ message: 'Reservation cancelled successfully' });
+  } catch (error) {
+    logger.error(`Error cancelling reservation: ${error.message}`);
+    res.status(500).json({ error: 'Failed to cancel reservation' });
+  }
+});
 
 
 app.listen(PORT, () => {
