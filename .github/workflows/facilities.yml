@@ -1,0 +1,63 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      mongo:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd="mongo --eval 'db.adminCommand(\"ping\")'"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      MONGO_URI: mongodb://localhost:27017/facilities_test_db
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Use Node.js 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Wait for MongoDB to be ready
+        run: |
+          until mongo --eval 'db.adminCommand("ping")' >/dev/null 2>&1; do
+            echo "Waiting for MongoDB..."
+            sleep 5
+          done
+
+      - name: Run tests
+        run: npm test
+        env:
+          MONGO_URI: ${{ env.MONGO_URI }}
+
+      - name: Build Docker image
+        run: docker build -t your-dockerhub-username/revije:latest .
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Push Docker image
+        run: docker push your-dockerhub-username/revije:latest
