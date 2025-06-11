@@ -1,0 +1,69 @@
+{"level":"info","message":"Web API Gateway running on port 3000"}
+{"level":"info","message":"POST /web/facilities - Web Gateway"}
+{"level":"info","message":"Created facility via web gateway"}
+{"level":"info","message":"GET /web/health - Web Gateway"}
+{"level":"info","message":"GET /web/auth/login - Web Gateway"}
+{"level":"error","message":"Error serving login page: "}
+{"level":"info","message":"GET /web/auth/register - Web Gateway"}
+{"level":"error","message":"Error serving register page: "}
+{"level":"info","message":"POST /web/auth/register - Web Gateway"}
+{"level":"error","message":"Registration error: "}
+{"level":"info","message":"POST /web/auth/login - Web Gateway"}
+{"level":"error","message":"Login error: "}
+{"level":"info","message":"POST /web/facilities - Web Gateway"}
+{"level":"info","message":"Created facility via web gateway"}
+{"level":"info","message":"GET /web/facilities/684905567648629687691c2c - Web Gateway"}
+{"level":"info","message":"Retrieved facility 684905567648629687691c2c via web gateway"}
+{"level":"info","message":"POST /web/facilities/684905567648629687691c2c/available-times - Web Gateway"}
+{"level":"info","message":"Added available time to facility 684905567648629687691c2c via web gateway"}
+{"level":"info","message":"GET /web/facilities - Web Gateway"}
+{"level":"info","message":"POST /web/reservations - Web Gateway"}
+{"level":"error","message":"Error creating reservation: Request failed with status code 500"}
+{"level":"info","message":"GET /web/reservations/ - Web Gateway"}
+{"level":"info","message":"GET /web/dashboard - Web Gateway"}
+{"level":"info","message":"Dashboard data requested via web gateway"}
+{"level":"info","message":"PUT /web/facilities/684905567648629687691c2c - Web Gateway"}
+{"level":"info","message":"Updated facility 684905567648629687691c2c via web gateway"}
+{"level":"info","message":"DELETE /web/reservations/ - Web Gateway"}
+{"level":"info","message":"GET /web/health - Web Gateway"}
+{"level":"info","message":"GET /web/auth/login - Web Gateway"}
+{"level":"error","message":"Error serving login page: "}
+{"level":"info","message":"GET /web/login - Web Gateway"}
+{"level":"info","message":"GET /web/auth/login - Web Gateway"}
+{"level":"error","message":"Error serving login page: "}
+{"level":"info","message":"Web API Gateway running on port 3000"}
+{"level":"info","message":"POST /web/auth/register - Web Gateway"}
+{"level":"error","message":"Registration error: "}
+{"level":"info","message":"POST /web/auth/register - Web Gateway"}
+{"level":"error","message":"Registration error: "}
+{"level":"info","message":"POST /web/auth/login - Web Gateway"}
+{"level":"error","message":"Login error: "}
+{"level":"info","message":"Web API Gateway running on port 3000"}
+{"level":"info","message":"POST /web/auth/register - Web Gateway"}
+{"level":"error","message":"Registration error: "}
+{"level":"info","message":"POST /web/auth/register - Web Gateway"}
+{"level":"error","message":"Registration error: "}
+{"level":"info","message":"POST /web/auth/login - Web Gateway"}
+{"level":"error","message":"Login error: "}
+{"level":"info","message":"POST /web/auth/login - Web Gateway"}
+{"level":"error","message":"Login error: "}
+{"level":"info","message":"POST /web/auth/register - Web Gateway"}
+{"level":"error","message":"Registration error: "}
+{"level":"info","message":"POST /web/auth/register - Web Gateway"}
+{"level":"error","message":"Registration error: "}
+{"level":"info","message":"POST /web/auth/register - Web Gateway"}
+{"level":"error","message":"Registration error: "}
+{"level":"info","message":"POST /web/reservations - Web Gateway"}
+{"level":"error","message":"Error creating reservation: Request failed with status code 500"}
+{"level":"info","message":"POST /web/facilities - Web Gateway"}
+{"level":"info","message":"Created facility via web gateway"}
+{"level":"info","message":"GET /web/facilities/6849073f7648629687691c32 - Web Gateway"}
+{"level":"info","message":"Retrieved facility 6849073f7648629687691c32 via web gateway"}
+{"level":"info","message":"POST /web/facilities/6849073f7648629687691c32/available-times - Web Gateway"}
+{"level":"info","message":"Added available time to facility 6849073f7648629687691c32 via web gateway"}
+{"level":"info","message":"PUT /web/facilities/6849073f7648629687691c32 - Web Gateway"}
+{"level":"info","message":"Updated facility 6849073f7648629687691c32 via web gateway"}
+{"level":"info","message":"DELETE /web/facilities/6849073f7648629687691c32/available-times - Web Gateway"}
+{"level":"info","message":"Removed available time from facility 6849073f7648629687691c32 via web gateway"}
+{"level":"info","message":"DELETE /web/facilities/6849073f7648629687691c32 - Web Gateway"}
+{"level":"info","message":"Deleted facility 6849073f7648629687691c32 via web gateway"}
