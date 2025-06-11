@@ -101,3 +101,13 @@
 {"level":"info","message":"Web API Gateway running on port 3000"}
 {"level":"info","message":"GET /web/reservations/6132 - Web Gateway"}
 {"level":"info","message":"Retrieved reservation 6132 via web gateway"}
+{"level":"info","message":"Web API Gateway running on port 3000"}
+{"level":"info","message":"POST /web/users/register - Web Gateway"}
+{"level":"info","message":"POST /web/users/register - Web Gateway"}
+{"level":"info","message":"GET /web/reservations/6132 - Web Gateway"}
+{"level":"info","message":"Retrieved reservation 6132 via web gateway"}
+{"level":"info","message":"POST /web/facilities - Web Gateway"}
+{"level":"info","message":"Created facility via web gateway"}
+{"level":"info","message":"GET /web/facilities/684915e7a90a63a22dce954a - Web Gateway"}
+{"level":"info","message":"Retrieved facility 684915e7a90a63a22dce954a via web gateway"}
+{"level":"info","message":"Web API Gateway running on port 3000"}

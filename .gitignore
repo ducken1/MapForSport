@@ -1,2 +1,4 @@
 .env
 docker-compose.yml
+**/application.properties
+**/docker-compose.yml
